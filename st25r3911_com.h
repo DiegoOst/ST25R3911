@@ -77,7 +77,7 @@
 #include <stdbool.h>
 #include "st_errno.h"
 #include "platform1.h"
-#include "st25r3911.h"
+#include "ST25R3911.h"
 #include "utils.h"
 
 

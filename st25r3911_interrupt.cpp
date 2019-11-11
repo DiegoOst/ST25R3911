@@ -42,7 +42,7 @@
 */
 #include "st25r3911_interrupt.h"
 #include "st25r3911_com.h"
-#include "st25r3911.h"
+#include "ST25R3911.h"
 #include "st_errno.h"
 #include "utils.h"
 #include "rfal_rf.h"
