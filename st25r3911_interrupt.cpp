@@ -89,7 +89,6 @@ extern volatile bool wakeupFlag;
 void st25r3911InitInterrupts( DigitalOut* fieldLED_06 )
 {
 
-    //platformIrqST25R3911SetCallback( st25r3911Isr );
     
     st25r3911interrupt.callback     = NULL;
     st25r3911interrupt.prevCallback = NULL;
@@ -115,10 +114,7 @@ void st25r3911CheckForReceivedInterrupts( SPI* mspiChannel, ST25R3911* mST25, Di
 
     ST_MEMSET( iregs, (uint8_t)ST25R3911_IRQ_MASK_ALL, ST25R3911_INT_REGS_LEN );
         
-   /* In case the IRQ is Edge (not Level) triggered read IRQs until done */
-  // while( platformGpioIsHigh( ST25R391X_INT_PORT, ST25R391X_INT_PIN ) )
-	//while( wakeupFlag == 1 )
- //  {
+
 
        mST25 -> readMultipleRegisters(ST25R3911_REG_IRQ_MAIN, iregs, sizeof(iregs), mspiChannel, mST25, gpio_cs, IRQ, fieldLED_01, fieldLED_02, fieldLED_03, fieldLED_04, fieldLED_05, fieldLED_06 ) ;
 
@@ -128,17 +124,13 @@ void st25r3911CheckForReceivedInterrupts( SPI* mspiChannel, ST25R3911* mST25, Di
        }
 
 
-//altro
-
-
 
        irqStatus  = (uint32_t)iregs[0];
        irqStatus |= (uint32_t)iregs[1]<<8;
        irqStatus |= (uint32_t)iregs[2]<<16;
        /* forward all interrupts, even masked ones to application. */
        st25r3911interrupt.status |= irqStatus;
-    //   wakeupFlag = 0;
-  // }
+
 }
 
 

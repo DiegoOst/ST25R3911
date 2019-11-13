@@ -99,6 +99,16 @@ static inline void st25r3911CheckFieldSetLED(uint8_t val, DigitalOut* fieldLED_0
  *
  *  \param[in]  reg: Address of register to read.
  *  \param[out] val: Returned value.
+ *  \param[in]  mspiChannel: Channel of the SPI
+ *  \param[in]  gpio_cs: Chip Select of the SPI
+ *  \param[in]  IRQ: Interrupt line. Not implemented, It is a polling application.
+ *  \param[out]  fieldLED_01: Digital Output of the LED1
+ *  \param[out]  fieldLED_02: Digital Output of the LED2
+ *  \param[out]  fieldLED_03: Digital Output of the LED3
+ *  \param[out]  fieldLED_04: Digital Output of the LED4
+ *  \param[out]  fieldLED_05: Digital Output of the LED5
+ *  \param[out]  fieldLED_06: Digital Output of the LED6
+ *
  *
  *****************************************************************************
  */
@@ -139,6 +149,15 @@ void ST25R3911::readRegister(uint8_t reg, uint8_t* val, SPI* mspiChannel, Digita
  *
  *  \param[in]  reg: Address of the register to write.
  *  \param[in]  val: Value to be written.
+ *  \param[in]  mspiChannel: Channel of the SPI
+ *  \param[in]  gpio_cs: Chip Select of the SPI
+ *  \param[in]  IRQ: Interrupt line. Not implemented, It is a polling application.
+ *  \param[out]  fieldLED_01: Digital Output of the LED1
+ *  \param[out]  fieldLED_02: Digital Output of the LED2
+ *  \param[out]  fieldLED_03: Digital Output of the LED3
+ *  \param[out]  fieldLED_04: Digital Output of the LED4
+ *  \param[out]  fieldLED_05: Digital Output of the LED5
+ *  \param[out]  fieldLED_06: Digital Output of the LED6
  *
  *****************************************************************************
  */
@@ -180,6 +199,16 @@ void ST25R3911::writeRegister(uint8_t reg, uint8_t val, SPI * mspiChannel,  Digi
  *  \param[in]  reg: Address of the frist register to read from.
  *  \param[in]  values: pointer to a buffer where the result shall be written to.
  *  \param[in]  length: Number of registers to be read out.
+ *  \param[in]  mspiChannel: Channel of the SPI
+ *  \param[in]  mST25: Object of the ST25 chip
+ *  \param[in]  gpio_cs: Chip Select of the SPI
+ *  \param[in]  IRQ: Interrupt line. Not implemented, It is a polling application.
+ *  \param[out]  fieldLED_01: Digital Output of the LED1
+ *  \param[out]  fieldLED_02: Digital Output of the LED2
+ *  \param[out]  fieldLED_03: Digital Output of the LED3
+ *  \param[out]  fieldLED_04: Digital Output of the LED4
+ *  \param[out]  fieldLED_05: Digital Output of the LED5
+ *  \param[out]  fieldLED_06: Digital Output of the LED6
  *
  *****************************************************************************
  */
@@ -197,10 +226,9 @@ void ST25R3911::readMultipleRegisters(uint8_t reg, uint8_t* val, uint8_t length,
         /* make this operation atomic */
     	for(index = 0; index < length; index ++)
     	{
-    	//	*gpio_cs = 0;
-        //	wait_us(50);
+
         	mST25 -> readRegister(cmd + index, (val + index), mspiChannel, gpio_cs, IRQ, fieldLED_01, fieldLED_02, fieldLED_03, fieldLED_04, fieldLED_05, fieldLED_06 ) ;
-        //	*gpio_cs = 1;
+
     	}
     }
 
@@ -218,6 +246,15 @@ void ST25R3911::readMultipleRegisters(uint8_t reg, uint8_t* val, uint8_t length,
  *  \param[in]  reg: Address of the frist register to write.
  *  \param[in]  values: pointer to a buffer containing the values to be written.
  *  \param[in]  length: Number of values to be written.
+ *  \param[in]  mST25: Object of the ST25 chip
+ *  \param[in]  mspiChannel: Channel of the SPI
+ *  \param[in]  gpio_cs: Chip Select of the SPI
+ *  \param[out]  fieldLED_01: Digital Output of the LED1
+ *  \param[out]  fieldLED_02: Digital Output of the LED2
+ *  \param[out]  fieldLED_03: Digital Output of the LED3
+ *  \param[out]  fieldLED_04: Digital Output of the LED4
+ *  \param[out]  fieldLED_05: Digital Output of the LED5
+ *  \param[out]  fieldLED_06: Digital Output of the LED6
  *
  *****************************************************************************
  */
@@ -238,10 +275,7 @@ void ST25R3911::writeMultipleRegisters(uint8_t reg, const uint8_t* values, uint8
         /* make this operation atomic */
     	for(index = 0; index < length; index ++)
     	{
-    	//	*gpio_cs = 0;
-        //	wait_us(50);
         	mST25 -> writeRegister(cmd + index, *(values + index), mspiChannel, gpio_cs, IRQ, fieldLED_01, fieldLED_02, fieldLED_03, fieldLED_04, fieldLED_05, fieldLED_06 ) ;
-        //	*gpio_cs = 1;
     	}
     }
 
@@ -256,6 +290,15 @@ void ST25R3911::writeMultipleRegisters(uint8_t reg, const uint8_t* values, uint8
  *  datasheet).
  *
  *  \param[in]  cmd : code of the direct command to be executed.
+ *  \param[in]  mspiChannel: Channel of the SPI
+ *  \param[in]  gpio_cs: Chip Select of the SPI
+ *  \param[in]  IRQ: Interrupt line. Not implemented, It is a polling application.
+ *  \param[out]  fieldLED_01: Digital Output of the LED1
+ *  \param[out]  fieldLED_02: Digital Output of the LED2
+ *  \param[out]  fieldLED_03: Digital Output of the LED3
+ *  \param[out]  fieldLED_04: Digital Output of the LED4
+ *  \param[out]  fieldLED_05: Digital Output of the LED5
+ *  \param[out]  fieldLED_06: Digital Output of the LED6
  *
  *****************************************************************************
  */
@@ -292,6 +335,16 @@ void ST25R3911::executeCommand(uint8_t cmd, SPI* mspiChannel,  DigitalOut * gpio
  *
  *  \param[in]  cmds   : codes of the direct command to be executed.
  *  \param[in]  length : number of commands to be executed
+ *  \param[in]  mST25: Object of the ST25 chip
+ *  \param[in]  mspiChannel: Channel of the SPI
+ *  \param[in]  gpio_cs: Chip Select of the SPI
+ *  \param[in]  IRQ: Interrupt line. Not implemented, It is a polling application.
+ *  \param[out]  fieldLED_01: Digital Output of the LED1
+ *  \param[out]  fieldLED_02: Digital Output of the LED2
+ *  \param[out]  fieldLED_03: Digital Output of the LED3
+ *  \param[out]  fieldLED_04: Digital Output of the LED4
+ *  \param[out]  fieldLED_05: Digital Output of the LED5
+ *  \param[out]  fieldLED_06: Digital Output of the LED6
  *
  *****************************************************************************
  */
@@ -304,12 +357,8 @@ void ST25R3911::executeCommands(uint8_t *cmds, uint8_t length, ST25R3911* mST25,
 
  	for(index = 0; index < length; index++)
  	{
-   //	*gpio_cs = 0;
-   // 	wait_us(50);
     	mST25 -> executeCommand(*cmds, mspiChannel, gpio_cs, IRQ, fieldLED_01, fieldLED_02, fieldLED_03, fieldLED_04, fieldLED_05, fieldLED_06 ) ;
-  //  	*gpio_cs = 1;
     	*cmds++;
-
  	}
 
     return;
@@ -328,6 +377,15 @@ void ST25R3911::executeCommands(uint8_t *cmds, uint8_t length, ST25R3911* mST25,
  *  \param[in]  values: pointer to a buffer containing the values to be written
  *                      to the FIFO.
  *  \param[in]  length: Number of values to be written.
+ *  \param[in]  mspiChannel: Channel of the SPI
+ *  \param[in]  gpio_cs: Chip Select of the SPI
+ *  \param[in]  IRQ: Interrupt line. Not implemented, It is a polling application.
+ *  \param[out]  fieldLED_01: Digital Output of the LED1
+ *  \param[out]  fieldLED_02: Digital Output of the LED2
+ *  \param[out]  fieldLED_03: Digital Output of the LED3
+ *  \param[out]  fieldLED_04: Digital Output of the LED4
+ *  \param[out]  fieldLED_05: Digital Output of the LED5
+ *  \param[out]  fieldLED_06: Digital Output of the LED6
  *
  *****************************************************************************
  */
@@ -339,7 +397,6 @@ void ST25R3911::writeFifo(const uint8_t* val, uint8_t length, SPI* mspiChannel, 
 
     if (length > 0)
     {
-//ST25R3911_CMD_LEN gestire
 
         uint8_t cmd = ST25R3911_FIFO_LOAD;
         uint8_t values[length + 1];
@@ -370,6 +427,15 @@ void ST25R3911::writeFifo(const uint8_t* val, uint8_t length, SPI* mspiChannel, 
  *  \param[in]  length: Number of bytes to read. (= size of \a buf)
  *  \note: This function doesn't check whether \a length is really the
  *  number of available bytes in FIFO
+ *  \param[in]  mspiChannel: Channel of the SPI
+ *  \param[in]  gpio_cs: Chip Select of the SPI
+ *  \param[in]  IRQ: Interrupt line. Not implemented, It is a polling application.
+ *  \param[out]  fieldLED_01: Digital Output of the LED1
+ *  \param[out]  fieldLED_02: Digital Output of the LED2
+ *  \param[out]  fieldLED_03: Digital Output of the LED3
+ *  \param[out]  fieldLED_04: Digital Output of the LED4
+ *  \param[out]  fieldLED_05: Digital Output of the LED5
+ *  \param[out]  fieldLED_06: Digital Output of the LED6
  *
  *****************************************************************************
  */
@@ -378,8 +444,6 @@ void ST25R3911::readFifo(uint8_t* buf, uint8_t length, SPI* mspiChannel, Digital
 {
     if (length > 0)
     {
-//ST25R3911_CMD_LEN gestire
-
 
         uint8_t cmd[2];
         cmd[0] = ST25R3911_FIFO_READ;
@@ -390,7 +454,6 @@ void ST25R3911::readFifo(uint8_t* buf, uint8_t length, SPI* mspiChannel, Digital
         wait_us(50);
         mspiChannel -> write((const char *)cmd, ST25R3911_CMD_LEN, NULL, NULL);
         mspiChannel -> write(NULL, NULL, (char *)buf, length);
-     //  mspiChannel -> write( (const char *)cmd, 2, (char *)buf , length);
         *gpio_cs = 1;
         IRQ->enable_irq();
 
